@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""_summary_
+"""Hypermedia pagination
     """
 import csv
 from typing import List, Dict, Any
@@ -40,10 +40,10 @@ class Server:
         """
         data = self.get_page(page, page_size)
         total_pages = len(self.dataset()) / page_size
-        # if len(self.dataset()) % page_size != 0:
-        #     total_pages += 1
+        if len(self.dataset()) % page_size != 0:
+            total_pages += 1
         return {
-            'page_size': len(data),
+            'page_size': page_size,
             'page': page,
             'data': data,
             'next_page': page + 1 if page < total_pages else None,
