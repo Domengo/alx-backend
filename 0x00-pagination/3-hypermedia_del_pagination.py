@@ -40,4 +40,33 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-            pass
+        """Return a dictionary containing the following key-value pairs:
+        index: the current start index of the return page. That is the index
+               of the first item in the current page. For example if
+               requesting page 3 with page_size 20, and no data was removed
+               from the dataset, the current index should be 60.
+        next_index: the next index to query with. That should be the index of
+                    the first item after the last item on the current page.
+        page_size: the current page size
+        data: the actual page of the dataset
+        """
+        assert isinstance(index, int)
+        assert isinstance(page_size, int)
+        assert 0 <= index < len(self.dataset())
+        assert page_size <= len(self.dataset())
+
+        data = []
+        next_index = index + page_size
+        for i in range(index, next_index):
+            if i not in self.indexed_dataset():
+                next_index += 1
+                next_index += 1
+            else:
+                data.append(self.indexed_dataset()[i])
+
+        return {
+            'index': index,
+            'next_index': next_index,
+            'page_size': page_size,
+            'data': data
+        }
