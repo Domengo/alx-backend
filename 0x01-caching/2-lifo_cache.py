@@ -14,12 +14,16 @@ class LIFOCache(BaseCaching):
     def put(self, key, item):
         """Add an item in the cache"""
         if key and item:
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                discard = self.queue.pop()
-                del self.cache_data[discard]
-                print('DISCARD: {}'.format(discard))
-            self.queue.append(key)
-            self.cache_data[key] = item
+            if key in self.cache_data:
+                del self.cache_data[key]
+                self.queue.remove(key)
+            else:
+                del self.cache_data[self.queue[self.MAX_ITEMS - 1]]
+                item_discarded = self.queue.pop(self.MAX_ITEMS - 1)
+                print("DISCARD:", item_discarded)
+
+        self.cache_data[key] = item
+        self.queue.append(key)
 
     def get(self, key):
         """Get an item by key"""
