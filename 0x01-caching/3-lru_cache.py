@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """LRU Caching
 """
-from base_caching import BaseCaching
 import collections
+from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
