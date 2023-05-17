@@ -1,20 +1,28 @@
 #!/usr/bin/env python3
-"""MRUCache"""
-from base_caching import BaseCaching
+"""
+MRU Caching
+"""
+
+
 from collections import OrderedDict
 
 
+BaseCaching = __import__('base_caching').BaseCaching
+
+
 class MRUCache(BaseCaching):
-    """MRU Cache class
+    """
+    class MRUCache that inherits
+    from BaseCaching and is a caching system
     """
     def __init__(self):
-        """Constructor
-        """
         super().__init__()
         self.mru_order = OrderedDict()
 
     def put(self, key, item):
-        """Add an item in the cache
+        """
+        Must assign to the dictionary
+        self.cache_data the item value for the key key
         """
         if not key or not item:
             return
@@ -33,7 +41,9 @@ class MRUCache(BaseCaching):
         self.mru_order.move_to_end(key, False)
 
     def get(self, key):
-        """Get an item by key
+        """
+        Must return the value in
+        self.cache_data linked to key.
         """
         if key in self.cache_data:
             self.mru_order.move_to_end(key, False)
