@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""LFUCache"""
+""" caching system
+    """
 
-BaseCaching = __import__('base_caching').BaseCaching
+from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """class LFUCache """
+    """ caching system:
+
+    Args:
+        LFUCache ([class]): [basic caching]
+    """
+
     def __init__(self) -> None:
         """ initialize of class """
         self.temp_list = {}
@@ -17,8 +23,7 @@ class LFUCache(BaseCaching):
         if not (key is None or item is None):
             self.cache_data[key] = item
             if len(self.cache_data.keys()) > self.MAX_ITEMS:
-                pop = min(self.temp_list,
-                          key=self.temp_list.get) # type: ignore
+                pop = min(self.temp_list, key=self.temp_list.get)
                 self.temp_list.pop(pop)
                 self.cache_data.pop(pop)
                 print(f"DISCARD: {pop}")
