@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createClient } from "redis";
 
 const client = createClient();
@@ -9,4 +10,3 @@ client.on("connect", () => {
 client.on("error", (err) => {
     console.log(`Redis client not connected to the server: {err}`);
 });
-  
