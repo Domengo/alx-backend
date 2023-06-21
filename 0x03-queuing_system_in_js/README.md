@@ -7,7 +7,7 @@
 - [Redis client interface](https://redis.io/docs/ui/cli/)
 - [Redis client for Node JS](https://github.com/redis/node-redis)
 - [Kue `deprecated but still use in the industry`](https://github.com/Automattic/kue)
-Learning Objectives
+## Learning Objectives
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 
 How to run a Redis server on your machine
