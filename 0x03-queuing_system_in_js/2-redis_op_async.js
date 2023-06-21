@@ -1,5 +1,5 @@
-#!/usr/bin/env node
 import { createClient, print } from 'redis';
+import { promisify } from 'util';
 
 const client = createClient();
 
@@ -15,18 +15,18 @@ function setNewSchool(schoolName, value) {
   client.set(schoolName, value, print);
 }
 
-function displaySchoolValue(schoolName) {
-  client.get(schoolName, (err, res) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
+const getAsync = promisify(client.get).bind(client);
+
+async function displaySchoolValue(schoolName) {
+  try {
+    const res = await getAsync(schoolName);
     console.log(res);
-  });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 displaySchoolValue('Holberton');
 setNewSchool('HolbertonSanFrancisco', '100');
 displaySchoolValue('HolbertonSanFrancisco');
-
-exports.display = displaySchoolValue;
