@@ -1,32 +1,72 @@
-import { createClient } from 'redis';
+class TestDataEmptyArray:
+    @staticmethod
+    def get_array():
+        return []
 
-const kuee = require('kue');
 
-const kue = kuee.createQueue();
+class TestDataUniqueValues:
+    @staticmethod
+    def get_array():
+        return [1, 2, 3, 4, 5]
 
-const client = createClient();
+    @staticmethod
+    def get_expected_result():
+        return 0
 
-client.on('connect', () => {
-  console.log('Redis client connected to the server');
-});
 
-client.on('error', (err) => {
-  console.log(`Redis client not connected to the server: ${err}`);
-});
+class TestDataExactlyTwoDifferentMinimums:
+    @staticmethod
+    def get_array():
+        return [1, 2, 3, 1, 4, 5]
 
-const job = {
-  phoneNumber: '0702060203',
-  message: 'Halo halo'
-}
+    @staticmethod
+    def get_expected_result():
+        return 0
 
-const aJob = kue.create('push_notification_code', job).save((err) => {
-  if (!err) {
-    console.log(`Notification job created: ${job.id}`);
-  }
-});
 
-aJob.on('complete', () => {
-  console.log('Notification job completed');
-}).on('failed', () => {
-  console.log('Notification job failed');
-});
+def minimum_index(seq):
+    if len(seq) == 0:
+        raise ValueError("Cannot get the minimum value index from an empty sequence")
+    min_idx = 0
+    for i in range(1, len(seq)):
+        if seq[i] < seq[min_idx]:
+            min_idx = i
+    return min_idx
+
+
+def TestWithEmptyArray():
+    try:
+        seq = TestDataEmptyArray.get_array()
+        result = minimum_index(seq)
+    except ValueError as e:
+        pass
+    else:
+        assert False
+
+
+def TestWithUniqueValues():
+    seq = TestDataUniqueValues.get_array()
+    assert len(seq) >= 2
+
+    assert len(set(seq)) == len(seq)
+
+    expected_result = TestDataUniqueValues.get_expected_result()
+    result = minimum_index(seq)
+    assert result == expected_result
+
+
+def TestWithExactlyTwoDifferentMinimums():
+    seq = TestDataExactlyTwoDifferentMinimums.get_array()
+    assert len(seq) >= 2
+    tmp = sorted(seq)
+    assert tmp[0] == tmp[1] and (len(tmp) == 2 or tmp[1] < tmp[2])
+
+    expected_result = TestDataExactlyTwoDifferentMinimums.get_expected_result()
+    result = minimum_index(seq)
+    assert result == expected_result
+
+
+TestWithEmptyArray()
+TestWithUniqueValues()
+TestWithExactlyTwoDifferentMinimums()
+print("OK")
